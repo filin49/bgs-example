@@ -74,6 +74,13 @@ services:
     links:
       - db
       - redis
+    entrypoint: bash -c
+    command: >
+      "sleep 20
+      && php artisan migrate:fresh --seed
+      && php artisan l5-swagger:generate
+      && php artisan queue:work
+      & php-fpm"
 
   nginx:
     image: 'nginx:1.10'
