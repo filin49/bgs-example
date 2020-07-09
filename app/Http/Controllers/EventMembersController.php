@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendWelcomeEmail;
+use App\Models\Event;
 use App\Models\EventMembers;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -216,6 +217,9 @@ class EventMembersController extends Controller
             if (empty($request->input('event_id')))
                 throw new Exception('Field "event_id" is required');
             if (EventMembers::query()->where('email', $request->input('email'))->count() > 0) {
+                throw new Exception('Email already registered');
+            }
+            if (Event::query()->find($request->input('event_id')) === null) {
                 throw new Exception('Email already registered');
             }
             $member = new EventMembers($request->only('name', 'surname', 'email', 'event_id'));
