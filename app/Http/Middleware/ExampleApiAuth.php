@@ -16,9 +16,9 @@ class ExampleApiAuth
      */
     public function handle($request, Closure $next, $guard = null)
     {
-//        if ($request->header('Bearer') !== '123') {
-//            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
-//        }
+        if ($request->header('Bearer') !== env('API_KEY')) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
+        }
 
         return $next($request);
     }
